@@ -1,8 +1,8 @@
-#include "displayer.hpp"
-#include "game.hpp"
-
 #include <iostream>
 #include <limits>
+
+#include "displayer.hpp"
+#include "game.hpp"
 
 constexpr char CLEAR[] = "\033[2J\033[H";
 constexpr char RESET[] = "\033[0m";

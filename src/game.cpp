@@ -52,16 +52,9 @@ void Game::Update() {
     std::vector<Position> state_revert_cells;
     auto affected_poses = GetAffectedPoses();
 
-    // std::cout << "affected_poses: \n";
-    // for (auto& pose : affected_poses) {
-    //     std::cout << pose.x << " " << pose.y << "\n";
-    // }
-    // std::cout << "\n";
-
     // ====== Main Game Logic ====== //
     for (auto& pose : affected_poses) {
         int neighbor_live_cnt = CheckLiveNeighborsCount(pose);
-        //  std::cout << pose.x << " " << pose.y << ": " << neighbor_live_cnt << "\n";
         if (IsCellLive(pose)) {
             if (neighbor_live_cnt < 2 || neighbor_live_cnt > 3) {
                 // (3) All other live cells die in the next generation
@@ -77,12 +70,6 @@ void Game::Update() {
         }
     }
 
-    // std::cout << "state_revert_cells: \n";
-    // for (auto& pose : state_revert_cells) {
-    //     std::cout << pose.x << " " << pose.y << "\n";
-    // }
-    // std::cout << "\n";
-
     for (auto& pose : state_revert_cells) {
         if (IsCellLive(pose)) {
             cell_live_set_.erase(pose);
@@ -92,7 +79,9 @@ void Game::Update() {
     }
 }
 
-void Game::Show(bool dynamic_fit_window_start, bool dynamic_fit_window_size, const std::string& msg) {
+void Game::Show(bool dynamic_fit_window_start, 
+                bool dynamic_fit_window_size, 
+                const std::string& msg) {
     if (dynamic_fit_window_start) {
         dispayer_.DynamicFitWindow(*this, dynamic_fit_window_size);
     }
@@ -104,7 +93,13 @@ void Game::Show(bool dynamic_fit_window_start, bool dynamic_fit_window_size, con
 /**
  * If max_step < 0, run infinite steps
  */
-void Game::Run(int max_step, int interval_ms, int display_width_x, int display_width_y, bool dynamic_fit_window_start, bool dynamic_fit_window_size) {
+void Game::Run(int max_step, 
+              int interval_ms, 
+              int display_width_x, 
+              int display_width_y, 
+              bool dynamic_fit_window_start, 
+              bool dynamic_fit_window_size) {
+
     dispayer_.SetWindowStart(-1, -1);
     dispayer_.SetWindowSize(display_width_x, display_width_y);
 

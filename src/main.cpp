@@ -1,17 +1,9 @@
-#include "game.hpp"
 #include <fstream>
 #include <iostream>
 #include <unordered_set>
 #include <vector>
 
-const std::vector<Position> loaf_pattern_init = {
-    {0, 1},
-    {0, 2},
-    {1, 0},
-    {1, 3},
-    {2, 1},
-    {2, 3},
-    {3, 2}};
+#include "game.hpp"
 
 const std::vector<Position> toad_pattern_init = {
     {0, 1},
@@ -53,19 +45,29 @@ bool SaveUniverseToFile(const std::string& file_name, const std::unordered_set<P
     return true;
 }
 
-int main(void) {
+bool DemoGliderPattern() {
     Game game;
+    game.SetInitLiveCells(glider_pattern_init);
+    game.Run(20, 500);
+    return true;
+}
 
-    // game.SetInitLiveCells(toad_pattern_init);
-    // game.Run(20, 1000);
-    
+bool DemoToadPattern() {
+    Game game;
+    game.SetInitLiveCells(toad_pattern_init);
+    game.Run(-1, 500);
+    return true;
+}
+
+bool DempGosperGliderGun() {
     const std::string in_filename = "data/gosper_glider_gun.txt";
     const std::string out_filename = "data/gosper_glider_gun-out.txt";
 
+    Game game;
     std::vector<Position> live_cells_in_universe;
     bool is_loaded = LoadUniverseFromFile(in_filename, live_cells_in_universe);
     if (!is_loaded) {
-        return 1;
+        return false;
     }
 
     game.SetInitLiveCells(live_cells_in_universe);
@@ -73,8 +75,19 @@ int main(void) {
 
     bool is_saved = SaveUniverseToFile(out_filename, game.GetCellLiveSet());
     if (!is_saved) {
-        return 1;
+        return false;
     }
+
+    return true;
+}
+
+int main(void) {
+
+    DemoGliderPattern();
+
+    DempGosperGliderGun();
+
+    DemoToadPattern();
 
     return 0;
 }

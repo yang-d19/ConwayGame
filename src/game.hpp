@@ -28,7 +28,14 @@ public:
 
     void Update();
 
-    void Show(bool dynamic_fit_window_start, bool dynamic_fit_window_size, const std::string& msg);
+    void Show(bool dynamic_fit_window_start, 
+              bool dynamic_fit_window_size, 
+              const std::string& msg);
 
-    void Run(int max_step=-1, int interval_ms=1000, int display_width_x=10, int display_width_y=12, bool dynamic_adjust_window=true, bool dynamic_fit_window_size=true);
+    void Run(int max_step=-1, 
+             int interval_ms=1000, 
+             int display_width_x=10, 
+             int display_width_y=12, 
+             bool dynamic_adjust_window=true, 
+             bool dynamic_fit_window_size=true);
 };
