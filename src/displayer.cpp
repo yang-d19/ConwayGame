@@ -2,10 +2,9 @@
 #include <limits>
 
 #include "displayer.hpp"
-#include "game.hpp"
+#include "game_logic.hpp"
 
 constexpr char CLEAR[] = "\033[2J\033[H";
-constexpr char RESET[] = "\033[0m";
 constexpr char BLACK_BLOCK[] = "\033[40m  \033[0m";
 constexpr char WHITE_BLOCK[] = "\033[47m  \033[0m";
 
@@ -30,7 +29,7 @@ std::pair<int, int> Displayer::GetWindowSize() const {
     return {window_size_x_, window_size_y_};
 }
 
-void Displayer::DynamicFitWindow(const Game& game, bool fit_window_size) {
+void Displayer::DynamicFitWindow(const GameLogic& game, bool fit_window_size) {
     int min_x = std::numeric_limits<int>::max();
     int min_y = std::numeric_limits<int>::max();
     int max_x = std::numeric_limits<int>::min();
@@ -50,7 +49,7 @@ void Displayer::DynamicFitWindow(const Game& game, bool fit_window_size) {
     }
 }
 
-void Displayer::Show(const Game& game) const {
+void Displayer::ShowMainWindow(const GameLogic& game) const {
     std::cout << CLEAR;
     for (int x = window_start_x_; x < window_start_x_ + window_size_x_; x++) {
         for (int y = window_start_y_ ; y < window_start_y_ + window_size_y_; y++) {
@@ -58,4 +57,9 @@ void Displayer::Show(const Game& game) const {
         }
         std::cout << '\n';
     }
+}
+
+void Displayer::ShowExtraMessage(const std::string& msg) const {
+    std::cout << "--------------------" << std::endl;
+    std::cout << msg << std::endl;
 }

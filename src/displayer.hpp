@@ -1,8 +1,9 @@
 #pragma once
 
+#include <string>
 #include <utility>
 
-class Game;
+class GameLogic;
 
 class Displayer {
 private:
@@ -21,7 +22,9 @@ public:
 
     std::pair<int, int> GetWindowSize() const;
 
-    void DynamicFitWindow(const Game& game, bool fit_window_size);
+    void DynamicFitWindow(const GameLogic& game, bool fit_window_size);
 
-    void Show(const Game& game) const;
+    void ShowMainWindow(const GameLogic& game) const;
+
+    void ShowExtraMessage(const std::string& msg) const;
 };

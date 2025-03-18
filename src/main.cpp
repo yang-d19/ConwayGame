@@ -1,9 +1,6 @@
-#include <fstream>
-#include <iostream>
-#include <unordered_set>
 #include <vector>
 
-#include "game.hpp"
+#include "controller.hpp"
 
 const std::vector<Position> toad_pattern_init = {
     {0, 1},
@@ -20,74 +17,77 @@ const std::vector<Position> glider_pattern_init = {
     {2, 1}, 
     {2, 2}};
 
-bool LoadUniverseFromFile(const std::string& file_name, std::vector<Position>& live_cell_poses) {
-    std::ifstream file(file_name);
-    if (!file) {
-        std::cerr << "Unable to open: " << file_name << std::endl;
-        return false;
-    }
-    Position tmp_pose;
-    while (file >> tmp_pose.x >> tmp_pose.y) {
-        live_cell_poses.push_back(tmp_pose);
-    }
-    return true;
+void DemoGliderPattern() {
+
+    Controller controller;
+    controller.SetInitPattern(glider_pattern_init);
+    controller.SetGameParameter({
+        20,
+        400
+    });
+    controller.SetDisplayerParameter({
+        -1,
+        -1,
+        10,
+        10,
+        true,
+        false
+    });
+
+    controller.Run();
 }
 
-bool SaveUniverseToFile(const std::string& file_name, const std::unordered_set<Position>& cell_live_set) {
-    std::ofstream file(file_name);
-    if (!file) {
-        std::cerr << "Unable to create: " << file_name << std::endl;
-        return false;
-    }
-    for (const auto& pos : cell_live_set) {
-        file << pos.x << " " << pos.y << "\n";
-    }
-    return true;
+void DemoToadPattern() {
+
+    Controller controller;
+    controller.SetInitPattern(toad_pattern_init);
+    controller.SetGameParameter({
+        -1,
+        500
+    });
+    controller.SetDisplayerParameter({
+        -1,
+        -1,
+        8,
+        8,
+        true,
+        true
+    });
+
+    controller.Run();
 }
 
-bool DemoGliderPattern() {
-    Game game;
-    game.SetInitLiveCells(glider_pattern_init);
-    game.Run(20, 500);
-    return true;
-}
-
-bool DemoToadPattern() {
-    Game game;
-    game.SetInitLiveCells(toad_pattern_init);
-    game.Run(-1, 500);
-    return true;
-}
-
-bool DempGosperGliderGun() {
+void DempGosperGliderGun() {
     const std::string in_filename = "data/gosper_glider_gun.txt";
     const std::string out_filename = "data/gosper_glider_gun-out.txt";
 
-    Game game;
-    std::vector<Position> live_cells_in_universe;
-    bool is_loaded = LoadUniverseFromFile(in_filename, live_cells_in_universe);
-    if (!is_loaded) {
-        return false;
-    }
+    Controller controller;
+    controller.LoadUniverseFromFile(in_filename);
+    controller.SetGameParameter({
+        200,
+        100
+    });
+    controller.SetDisplayerParameter({
+        -1,
+        -1,
+        8,
+        8,
+        true,
+        true
+    });
 
-    game.SetInitLiveCells(live_cells_in_universe);
-    game.Run(200, 100);
+    controller.Run();
 
-    bool is_saved = SaveUniverseToFile(out_filename, game.GetCellLiveSet());
-    if (!is_saved) {
-        return false;
-    }
-
-    return true;
+    controller.SaveUniverseToFile(out_filename);
 }
 
 int main(void) {
 
-    DemoGliderPattern();
+    // DemoGliderPattern();
 
     DempGosperGliderGun();
 
-    DemoToadPattern();
+    // DemoToadPattern();
 
     return 0;
 }
