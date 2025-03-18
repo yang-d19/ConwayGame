@@ -8,6 +8,7 @@ constexpr char CLEAR[] = "\033[2J\033[H";
 constexpr char BLACK_BLOCK[] = "\033[40m  \033[0m";
 constexpr char WHITE_BLOCK[] = "\033[47m  \033[0m";
 
+// limit window size for better visualization
 constexpr int kWindowMaxWidthX = 30;
 constexpr int kWindowMaxWidthY = 50;
 

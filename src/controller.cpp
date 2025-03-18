@@ -9,6 +9,8 @@ void Controller::Run() {
     displayer_.SetWindowStart(display_params_.window_start_x, display_params_.window_start_y);
     displayer_.SetWindowSize(display_params_.window_size_x, display_params_.window_size_y);
 
+    // If max_step_cnt set to -1, run infinite steps
+    // Else, run at most max_step_cnt steps
     while (game_params_.max_step_cnt < 0 || running_steps_ <= game_params_.max_step_cnt) {
 
         if (display_params_.dynamic_fit_window_start) {

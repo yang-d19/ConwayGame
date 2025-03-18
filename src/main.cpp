@@ -50,8 +50,8 @@ void DemoToadPattern() {
         -1,
         8,
         8,
-        true,
-        true
+        false,
+        false
     });
 
     controller.Run();
@@ -81,13 +81,39 @@ void DempGosperGliderGun() {
     controller.SaveUniverseToFile(out_filename);
 }
 
+void DempSimkinGliderGun() {
+    const std::string in_filename = "data/simkin_glider_gun.txt";
+    const std::string out_filename = "data/simkin_glider_gun-out.txt";
+
+    Controller controller;
+    controller.LoadUniverseFromFile(in_filename);
+    controller.SetGameParameter({
+        500,
+        100
+    });
+    controller.SetDisplayerParameter({
+        -5,
+        -5,
+        30,
+        45,
+        false,
+        false
+    });
+
+    controller.Run();
+
+    controller.SaveUniverseToFile(out_filename);
+}
+
 int main(void) {
 
     // DemoGliderPattern();
 
+    // DemoToadPattern();
+
     DempGosperGliderGun();
 
-    // DemoToadPattern();
+    // DempSimkinGliderGun();
 
     return 0;
 }

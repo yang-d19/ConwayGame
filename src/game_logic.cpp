@@ -4,7 +4,6 @@
 
 void GameLogic::Reset() {
     cell_live_set_.clear();
-    step_cnt_ = 0;
 }
 
 void GameLogic::SetInitLiveCells(const std::vector<Position>& live_cell_poses) {
@@ -15,6 +14,7 @@ void GameLogic::SetInitLiveCells(const std::vector<Position>& live_cell_poses) {
 
 std::unordered_set<Position> GameLogic::GetAffectedPoses() const {
     std::unordered_set<Position> affected_poses;
+    // get all live cells' neighbors and themself's position
     for (const auto& pose : cell_live_set_) {
         for (int nx = pose.x - 1; nx <= pose.x + 1; nx++) {
             for (int ny = pose.y - 1; ny <= pose.y + 1; ny++) {
@@ -44,7 +44,9 @@ int GameLogic::CheckLiveNeighborsCount(Position pose) const {
 }
 
 void GameLogic::Update() {
-    std::vector<Position> state_revert_cells;
+    // cells need to revert live/dead status
+    std::vector<Position> status_revert_cells;
+
     auto affected_poses = GetAffectedPoses();
 
     // ====== Main Game Logic ====== //
@@ -53,19 +55,20 @@ void GameLogic::Update() {
         if (IsCellLive(pose)) {
             if (neighbor_live_cnt < 2 || neighbor_live_cnt > 3) {
                 // (3) All other live cells die in the next generation
-                state_revert_cells.push_back(pose);
+                status_revert_cells.push_back(pose);
             }
             // (1) Any live cell with two or three live neighbors survives
         } else {
             if (neighbor_live_cnt == 3) {
                 // (2) Any dead cell with exactly three live neighbors becomes a live cell
-                state_revert_cells.push_back(pose);
+                status_revert_cells.push_back(pose);
             }
             // (3) all other dead cells stay dead
         }
     }
 
-    for (auto& pose : state_revert_cells) {
+    // ====== Update Status ====== //
+    for (auto& pose : status_revert_cells) {
         if (IsCellLive(pose)) {
             cell_live_set_.erase(pose);
         } else {
